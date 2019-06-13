@@ -1,11 +1,25 @@
 // crud for each user
 const express = require("express");
 const router = express.Router();
-//@route  POST api/contacts
+const auth = require("../middleware/auth");
+const { check, validationResult } = require("express-validator/check");
+
+const User = require("../models/User");
+const Contact = require("../models/Contact");
+//@route  GET api/contacts
 //@desc   Get all users contacts
 //@access Private
-router.post("/", (req, res) => {
-  res.send("Get all contacts");
+router.get("/", auth, async (req, res) => {
+  try {
+    //-1 means the most recent contact first
+    const contacts = await Contact.find({ user: req.user.id }).sort({
+      date: -1
+    });
+    res.json(contacts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 //@route  PUT api/contacts/:id
 //@desc   Update contacts
