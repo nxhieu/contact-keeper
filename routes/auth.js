@@ -1,4 +1,4 @@
-//authentication , check the login
+//log in(register), get and test the token and send the token to access the protected route
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
